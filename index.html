@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlueBelt Dojo — Train. Roll. Submit.</title>
+<meta name="description" content="โรงฝึกเขียนโค้ดยุค AI แบบสวมกำหนดสาย — workshop และหลักสูตรที่ทุกบทจบด้วยของที่มองเห็นได้ เริ่มจากคนไม่เขียนโค้ดก็ขึ้นสายได้">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0A1F3C;
+    --navy-deep:#061630;
+    --belt:#1E5AA8;
+    --belt-hi:#3B7BD4;
+    --mat:#2C2C2C;
+    --mat-hi:#373737;
+    --gi:#F5F5F5;
+    --gi-dim:#B8BEC8;
+    --gold:#8B6914;
+    --gold-hi:#D9B44A;
+    --line:#1C3A61;
+    --mono:'JetBrains Mono',monospace;
+    --disp:'Oswald',sans-serif;
+    --sans:'Inter','IBM Plex Sans Thai',sans-serif;
+    --th:'IBM Plex Sans Thai',sans-serif;
+    --maxw:1160px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--navy);
+    color:var(--gi);
+    font-family:var(--sans);
+    font-size:16.5px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  .th{font-family:var(--th)}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  a{color:inherit}
+  ::selection{background:var(--belt);color:#fff}
+
+  /* ===== top ===== */
+  .top{
+    position:sticky;top:0;z-index:60;
+    background:rgba(10,31,60,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .top .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .mark{display:flex;align-items:center;gap:12px;text-decoration:none}
+  .beltmark{width:44px;height:10px;border-radius:2px;background:linear-gradient(90deg,#fff 0 30%,var(--belt) 30% 100%);border:1px solid rgba(255,255,255,.25)}
+  .mark b{font-family:var(--disp);font-weight:600;font-size:1.05rem;letter-spacing:.08em;text-transform:uppercase}
+  .mark b span{color:var(--belt-hi)}
+  .top nav{display:flex;gap:26px;align-items:center}
+  .top nav a{font-family:var(--mono);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gi-dim);text-decoration:none;padding:6px 0}
+  .top nav a:hover{color:#fff}
+  .top .cta-sm{
+    font-family:var(--mono);font-size:.78rem;letter-spacing:.06em;
+    border:1px solid var(--belt);color:#fff;background:var(--belt);
+    padding:9px 18px;border-radius:6px;text-decoration:none;
+  }
+  .top .cta-sm:hover{background:var(--belt-hi)}
+
+  /* ===== hero ===== */
+  .hero{padding:96px 0 80px;border-bottom:1px solid var(--line);overflow:hidden;position:relative}
+  .hero .wrap{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.8fr);gap:64px;align-items:center}
+  .tagline{
+    font-family:var(--disp);
+    font-weight:700;
+    font-size:clamp(3rem,7.5vw,5.6rem);
+    line-height:1.02;
+    text-transform:uppercase;
+    letter-spacing:.01em;
+  }
+  .tagline .l1{color:var(--gi)}
+  .tagline .l2{color:var(--belt-hi)}
+  .tagline .l3{
+    color:transparent;
+    -webkit-text-stroke:2px var(--gi-dim);
+  }
+  .hero-th{
+    margin-top:26px;
+    font-family:var(--th);
+    font-size:1.2rem;
+    color:var(--gi-dim);
+    max-width:30em;
+  }
+  .hero-th b{color:var(--gi);font-weight:600}
+  .hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:34px;align-items:center}
+  .btn{
+    display:inline-block;font-family:var(--sans);font-weight:600;font-size:1rem;
+    padding:15px 30px;border-radius:8px;text-decoration:none;min-height:44px;
+    transition:transform .15s ease,background .15s ease;
+  }
+  .btn-blue{background:var(--belt);color:#fff;border:1px solid var(--belt)}
+  .btn-blue:hover{background:var(--belt-hi);transform:translateY(-2px)}
+  .btn-line{border:1px solid var(--line);color:var(--gi-dim)}
+  .btn-line:hover{border-color:var(--belt-hi);color:#fff}
+  .hero-meta{margin-top:26px;font-family:var(--mono);font-size:.78rem;color:var(--gi-dim);letter-spacing:.04em}
+
+  /* belt ladder — the one bold element */
+  .ladder{position:relative;padding-left:34px}
+  .ladder .caption{
+    position:absolute;left:0;top:0;bottom:0;width:18px;
+    writing-mode:vertical-rl;text-orientation:mixed;
+    font-family:var(--mono);font-size:.68rem;letter-spacing:.28em;
+    color:var(--gi-dim);text-transform:uppercase;
+  }
+  .rung{
+    display:grid;grid-template-columns:118px 1fr;gap:14px;align-items:center;
+    padding:13px 0;border-bottom:1px solid var(--line);
+  }
+  .rung:last-child{border-bottom:none}
+  .strap{
+    height:14px;border-radius:3px;position:relative;
+    border:1px solid rgba(255,255,255,.18);
+    transform-origin:left;
+  }
+  .strap i{position:absolute;top:0;bottom:0;width:7px;background:var(--gold-hi)}
+  .r-white  .strap{background:#F5F5F5}
+  .r-blue   .strap{background:var(--belt)}
+  .r-purple .strap{background:#6B4FA0}
+  .r-brown  .strap{background:#7A4A21}
+  .r-black  .strap{background:#101010}
+  .r-black  .strap i:nth-child(1){left:12%}
+  .r-black  .strap i:nth-child(2){left:32%}
+  .r-black  .strap i:nth-child(3){left:52%}
+  .r-blue   .strap i,.r-purple .strap i,.r-brown .strap i{left:14%}
+  .rung .rn{font-family:var(--disp);font-weight:600;font-size:1.05rem;letter-spacing:.06em;text-transform:uppercase}
+  .rung .rq{font-family:var(--mono);font-size:.72rem;color:var(--gi-dim);margin-top:2px}
+  .r-now .rn{color:var(--belt-hi)}
+  .r-now .rq::after{content:" ← รอบถัดไปเริ่มที่นี่";color:var(--gold-hi)}
+
+  /* ===== section scaffolding ===== */
+  section{padding:84px 0}
+  section + section{border-top:1px solid var(--line)}
+  .sec-th{font-family:var(--th);font-size:clamp(1.6rem,3vw,2.3rem);font-weight:700;line-height:1.3;margin:10px 0 12px;letter-spacing:-.01em}
+  .sec-en{font-family:var(--mono);font-size:.8rem;letter-spacing:.22em;text-transform:uppercase;color:var(--belt-hi)}
+  .lead{font-family:var(--th);color:var(--gi-dim);max-width:42em;font-size:1.05rem}
+
+  /* ===== programs ===== */
+  .flag{
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:linear-gradient(180deg,var(--mat) 0%,var(--navy-deep) 100%);
+    overflow:hidden;
+    display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);
+  }
+  .flag .body{padding:36px 38px}
+  .lvl{
+    display:inline-block;
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
+    color:#fff;background:var(--belt);
+    padding:5px 12px;border-radius:5px;
+  }
+  .flag h3{font-family:var(--disp);font-weight:600;font-size:clamp(1.7rem,3vw,2.4rem);text-transform:uppercase;letter-spacing:.02em;margin:16px 0 12px;line-height:1.15}
+  .flag .desc{font-family:var(--th);color:var(--gi-dim);font-size:1rem}
+  .flag .desc b{color:var(--gi);font-weight:600}
+  .flag ul{list-style:none;margin-top:20px}
+  .flag li{
+    font-family:var(--th);padding:10px 0;border-top:1px solid var(--line);
+    display:flex;gap:10px;align-items:baseline;
+  }
+  .flag li::before{content:"▸";color:var(--belt-hi);font-size:.85rem}
+  .flag .side{
+    border-left:1px solid var(--line);
+    padding:36px 34px;
+    display:flex;flex-direction:column;gap:0;
+    background:var(--navy-deep);
+  }
+  .side .k{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gi-dim)}
+  .side .v{font-family:var(--disp);font-weight:600;font-size:1.5rem;text-transform:uppercase;margin:4px 0 18px}
+  .side .v.price{color:var(--gold-hi)}
+  .side .btn{margin-top:auto;text-align:center}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:22px}
+  .mini{
+    border:1px dashed var(--line);border-radius:12px;padding:26px 28px;
+    background:transparent;
+  }
+  .mini .lvl{background:transparent;border:1px solid var(--gold);color:var(--gold-hi)}
+  .mini h4{font-family:var(--disp);font-weight:600;font-size:1.25rem;text-transform:uppercase;letter-spacing:.04em;margin:14px 0 8px}
+  .mini p{font-family:var(--th);color:var(--gi-dim);font-size:.95rem}
+  .mini .soon{font-family:var(--mono);font-size:.72rem;color:var(--gi-dim);margin-top:14px;letter-spacing:.1em;text-transform:uppercase}
+
+  /* ===== how ===== */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--navy-deep)}
+  .step{padding:30px 30px 34px;position:relative}
+  .step + .step{border-left:1px solid var(--line)}
+  .step .n{
+    font-family:var(--disp);font-weight:700;font-size:2.6rem;
+    color:transparent;-webkit-text-stroke:1.5px var(--belt-hi);
+    line-height:1;
+  }
+  .step h4{font-family:var(--th);font-weight:600;font-size:1.1rem;margin:14px 0 8px}
+  .step p{font-family:var(--th);color:var(--gi-dim);font-size:.94rem}
+  .step .tool{margin-top:14px;font-family:var(--mono);font-size:.72rem;color:var(--belt-hi)}
+
+  /* ===== about (placeholder) ===== */
+  .about{
+    border:1px solid var(--line);border-radius:14px;
+    background:var(--mat);
+    display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:0;overflow:hidden;
+  }
+  .about .txt{padding:38px 40px}
+  .about .txt p{font-family:var(--th);color:var(--gi-dim);max-width:46em}
+  .about .txt p b{color:var(--gi);font-weight:600}
+  .draft-note{
+    font-family:var(--mono);font-size:.74rem;color:var(--gold-hi);
+    border:1px dashed var(--gold);border-radius:6px;
+    display:inline-block;padding:6px 12px;margin-bottom:18px;letter-spacing:.06em;
+  }
+  .stats{border-left:1px solid var(--line);padding:38px 32px;display:flex;flex-direction:column;gap:24px;background:var(--navy-deep)}
+  .st .v{font-family:var(--disp);font-weight:600;font-size:1.9rem;line-height:1.1;text-transform:uppercase}
+  .st .v em{font-style:normal;color:var(--belt-hi)}
+  .st .k{font-family:var(--mono);font-size:.72rem;color:var(--gi-dim);letter-spacing:.08em}
+
+  /* ===== proof ===== */
+  .proof{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--navy-deep)}
+  .prow{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;padding:16px 26px;border-top:1px solid var(--line);align-items:baseline}
+  .prow:first-child{border-top:none}
+  .prow .c{font-family:var(--th);font-weight:500}
+  .prow .p{font-family:var(--mono);font-size:.78rem;color:var(--gi-dim)}
+
+  /* ===== final ===== */
+  .final{text-align:center;padding:100px 0 90px}
+  .final .tagline{font-size:clamp(2.4rem,6vw,4.4rem)}
+  .final .hero-th{margin-left:auto;margin-right:auto}
+  .final .hero-cta{justify-content:center}
+
+  /* ===== footer ===== */
+  footer{border-top:1px solid var(--line);padding:34px 0;color:var(--gi-dim)}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;font-size:.88rem}
+  footer .mono{font-family:var(--mono);font-size:.76rem;letter-spacing:.2em;text-transform:uppercase}
+  footer a{color:var(--gi)}
+  footer a:hover{color:var(--belt-hi)}
+
+  /* motion: one orchestrated reveal (belt ladder) */
+  .strap{animation:none}
+  @media (prefers-reduced-motion: no-preference){
+    .rung .strap{transform:scaleX(0);animation:fill .7s cubic-bezier(.22,1,.36,1) forwards}
+    .rung:nth-child(2) .strap{animation-delay:.15s}
+    .rung:nth-child(3) .strap{animation-delay:.3s}
+    .rung:nth-child(4) .strap{animation-delay:.45s}
+    .rung:nth-child(5) .strap{animation-delay:.6s}
+    .rung:nth-child(6) .strap{animation-delay:.75s}
+    @keyframes fill{to{transform:scaleX(1)}}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+  }
+  /* responsive */
+  @media (max-width:980px){
+    .hero .wrap{grid-template-columns:1fr;gap:48px}
+    .flag{grid-template-columns:1fr}
+    .flag .side{border-left:none;border-top:1px solid var(--line)}
+    .steps{grid-template-columns:1fr}
+    .step + .step{border-left:none;border-top:1px solid var(--line)}
+    .about{grid-template-columns:1fr}
+    .stats{border-left:none;border-top:1px solid var(--line)}
+    .cards{grid-template-columns:1fr}
+    .top nav a{display:none}
+  }
+  @media (max-width:560px){
+    .hero{padding:64px 0}
+    section{padding:60px 0}
+    .rung{grid-template-columns:96px 1fr}
+    .final .hero-cta{flex-direction:column;align-items:stretch}
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="#top">
+      <span class="beltmark"></span>
+      <b>BlueBelt <span>Dojo</span></b>
+    </a>
+    <nav>
+      <a href="#programs">Programs</a>
+      <a href="#how">วิธีเรียน</a>
+      <a href="#about">Founder</a>
+      <a class="cta-sm" href="#join">จองที่นั่ง</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <h1 class="tagline">
+        <div class="l1">TRAIN.</div>
+        <div class="l2">ROLL.</div>
+        <div class="l3">SUBMIT.</div>
+      </h1>
+      <p class="hero-th">
+        โรงฝึกเขียนโค้ดยุค AI แบบสวมกำหนดสาย — เริ่มจาก <b>คนที่ไม่เคยเขียนโค้ด</b>
+        ขึ้นสายขาวไปจนถึงดำ ทุกบทจบด้วย <b>ของที่มองเห็นได้</b> ไม่มีการเรียนแบบฟังจบจำอะไรไม่ได้
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-blue" href="#join">จองที่นั่งรอบถัดไป</a>
+        <a class="btn btn-line" href="#programs">ดูโปรแกรมทั้งหมด</a>
+      </div>
+      <div class="hero-meta">live workshop · interactive docs · ตรวจงานด้วย test จริง ไม่ใช่ความรู้สึก</div>
+    </div>
+
+    <aside class="ladder" aria-label="ระบบสายของ BlueBelt Dojo">
+      <div class="caption">BELT SYSTEM</div>
+      <div class="rung r-white">
+        <div><div class="rn">White</div><div class="rq">พื้นฐาน AI + prompt · 10 drills</div></div>
+        <div class="strap"></div>
+      </div>
+      <div class="rung r-blue r-now">
+        <div><div class="rn">Blue</div><div class="rq">3 โมดูลกลาง + 20 drills · deploy 2 แอป</div></div>
+        <div class="strap"></div>
+      </div>
+      <div class="rung r-purple">
+        <div><div class="rn">Purple</div><div class="rq">agentic AI · 2 ระบบ agent · capstone</div></div>
+        <div class="strap"></div>
+      </div>
+      <div class="rung r-brown">
+        <div><div class="rn">Brown</div><div class="rq">สอนต่อได้ · ออกแบบหลักสูตรเองได้</div></div>
+        <div class="strap"></div>
+      </div>
+      <div class="rung r-black">
+        <div><div class="rn">Black</div><div class="rq">จัด full SDLC ด้วยทีม AI ได้ครบวงจร</div></div>
+        <div class="strap"><i></i><i></i><i></i></div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section id="programs">
+  <div class="wrap">
+    <div class="sec-en">Programs</div>
+    <h2 class="sec-th">เลือกทางเข้าโดยของที่ตัวเองอยากได้</h2>
+    <p class="lead">ทุกโปรแกรมสอนแบบเดียวกัน — ลงมือทำจริง วัดผลด้วย test จริง และจบด้วยของที่เอาไปใช้ต่อได้</p>
+
+    <div class="flag rv" id="join">
+      <div class="body">
+        <span class="lvl">Live Workshop · Flagship</span>
+        <h3>Vibe Coding for PM</h3>
+        <p class="desc">ครึ่งวันสำหรับ <b>PM ที่เขียนโค้ดไม่เป็น</b> — จบคลาสมี <b>เว็บที่สร้างเอง</b> และ workflow ที่ทำซ้ำได้ 3 มุมมองใน 4 ชั่วโมง: ผู้ก่อตั้งเล่าทำไม · ผู้สอนโชว์วิธี · PM ตัวจริงพิสูจน์ด้วยเคสจริง</p>
+        <ul>
+          <li>ทุกบทจบด้วยของที่มองเห็นได้ — receipts over vibes</li>
+          <li>เรียน prompt → agent → verify จนเป็นวงจรของตัวเอง</li>
+          <li>เขียน card สั่งงาน AI แบบ PM · grill ก่อนสั่งทุกครั้ง</li>
+          <li>deploy ของจริงขึ้นอินเทอร์เน็ตก่อนออกจากห้อง</li>
+        </ul>
+      </div>
+      <div class="side">
+        <div class="k">ระยะเวลา</div><div class="v">4 ชั่วโมง</div>
+        <div class="k">รูปแบบ</div><div class="v">Live · ครึ่งวัน</div>
+        <div class="k">ค่าหัว</div><div class="v price">1,490 ฿</div>
+        <div class="k">ต้องเขียนโค้ดก่อน</div><div class="v">ไม่ต้อง</div>
+        <a class="btn btn-blue" href="mailto:poom@charoenyost.com?subject=%E0%B8%88%E0%B8%AD%E0%B8%87%20Vibe%20Coding%20for%20PM%20(%E0%B8%A3%E0%B8%AD%E0%B8%9A%E0%B9%81%E0%B8%A3%E0%B8%81)">จองที่นั่งรอบแรก →</a>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="mini rv">
+        <span class="lvl">Program · เร็ว ๆ นี้</span>
+        <h4>AI SDLC Path</h4>
+        <p>หลักสูตรสวมสายเต็มรูปแบบ — จาก white belt ถึง black: AI-assisted coding, testing, agentic AI, multi-agent systems ผ่าน interactive docs และ end-of-module challenges</p>
+        <div class="soon">กลับมาเปิดรับเร็ว ๆ นี้</div>
+      </div>
+      <div class="mini rv">
+        <span class="lvl">Lab · Open Source</span>
+        <h4>MiroFly Research</h4>
+        <p>แขนงวิจัยเปิดของโรงเรียน — สมองแมลงวันจริง 2,400 เซลล์ประสาท + 187k synapses จาก FlyWire connectome เป็น affect core ของ AI agents เรียนฟรี อ่านได้ทุกคน</p>
+        <div class="soon">github.com/Poom5741/MiroFly</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="sec-en">How it works</div>
+    <h2 class="sec-th">เรียนแบบโรงฝึก ไม่ใช่แบบห้องบรรยาย</h2>
+    <p class="lead">ระบบออกแบบมาจากวัฒนธรรมสวมกำหนดสาย: ฝึกจนมือจำ ทดสอบจริง และเลื่อนสายด้วยของจริงไม่ใช่ความรู้สึก</p>
+    <div class="steps rv">
+      <div class="step">
+        <div class="n">1</div>
+        <h4>อ่านและฝึกในเบราว์เซอร์</h4>
+        <p>บทเรียน interactive ฝัง playground ให้เขียนโค้ดและรันได้ในหน้าเดียว ไม่ต้องติดตั้งอะไรในเครื่อง</p>
+        <div class="tool">docs + inline drills · tests ต้องเขียว</div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <h4>ลองดวลจริงปลายโมดูล</h4>
+        <p>ท้าทายปลายโมดูล: ส่ง repo GitHub + ลิงก์แอปที่ deploy แล้ว ระบบตรวจด้วย tests จริง + ตรวจ deployment จริง</p>
+        <div class="tool">automated grading · ผ่านเพราะของทำงาน</div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <h4>ขึ้นสายด้วยของที่โชว์ได้</h4>
+        <p>สะสม drills + challenges + capstone จนขึ้นสาย ทุกสายพิสูจน์ด้วยแอปที่ใช้งานได้จริง ไม่ใช่ใบประกาศ</p>
+        <div class="tool">white → blue → purple → brown → black</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="sec-en">Founder</div>
+    <h2 class="sec-th">คนสร้างโรงฝึกนี้</h2>
+    <div class="about rv">
+      <div class="txt">
+        <!-- TODO(poom): ส่วนประวัติ — เขียนต่อเองตามนี้ได้เลย: เล่าเส้นทาง · อดีตประธานชมรม blockchain มธ. · สิ่งที่เชื่อ -->
+        <span class="draft-note">DRAFT — ส่วนนี้ Poom เขียนต่อเอง</span>
+        <p><b>จิรายุ เจริญยอสต์ (Poom)</b> — นักศึกษา CS มหาวิทยาลัยธรรมศาสตร์ อดีตประธานชมรม blockchain ผู้สร้างผลิตภัณฑ์ AI สาย developer tools ทั้งเรื่องระบบ agent, open-source research และเวิร์กช็อปสอนคนนอกสาย</p>
+        <p>สร้าง BlueBelt Dojo เพราะเชื่อว่ายุคนี้ <b>"เขียนโค้ด" ไม่ใช่ทักษะของสายเทคอีกต่อไป</b> — มันคือทักษะพื้นฐานของคนทำงานทุกสาย และการสอนที่ดีต้องวัดกันด้วยของที่ใช้ได้จริง ไม่ใช่ความรู้สึกว่าเข้าใจ</p>
+        <p style="margin-top:14px">ปรัชญาที่ยึดทั้งโรงเรียน: <b>"Receipts over vibes"</b> — ทุกคำกล่าวอ้างต้องมีหลักฐานตรวจสอบได้</p>
+      </div>
+      <div class="stats">
+        <div class="st"><div class="v">8/8 <em>tests</em></div><div class="k">LeadDesk CRM สร้างด้วย workflow ที่สอน · commit 4d8c7eb</div></div>
+        <div class="st"><div class="v">2,400 <em>neurons</em></div><div class="k">MiroFly — สมองแมลงวันจริงจาก FlyWire connectome</div></div>
+        <div class="st"><div class="v">3,731 <em>items</em></div><div class="k">ระบบผลิตของจริงทำงานประจำ · 0 errors</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="proof">
+  <div class="wrap">
+    <div class="sec-en">Receipts</div>
+    <h2 class="sec-th">หลักฐานที่คุณตรวจเองได้</h2>
+    <div class="proof rv" style="margin-top:26px">
+      <div class="prow"><div class="c">LeadDesk CRM สร้างด้วย workflow เดียวกับที่สอน — tests ผ่าน 8/8</div><div class="p">commit `4d8c7eb` · repo vibe-coding-for-pm</div></div>
+      <div class="prow"><div class="c">หลักสูตรเอกสารครบ 6 บท เปิดให้อ่านสาธารณะ</div><div class="p">github.com/Poom5741/vibe-coding-for-pm</div></div>
+      <div class="prow"><div class="c">MiroFly connectome จริง มีตาราง honesty แยก REAL / ยังไม่ใช่</div><div class="p">github.com/Poom5741/MiroFly</div></div>
+      <div class="prow"><div class="c">agent fleet หลายตัวทำงานร่วมกันบน VPS เครื่องเดียว — เปิดวิธีทำเป็น kit</div><div class="p">github.com/Poom5741/agent-workspace-kit</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="final" id="join-cta">
+  <div class="wrap">
+    <h1 class="tagline">
+      <div class="l1">READY TO</div>
+      <div class="l2">ROLL?</div>
+    </h1>
+    <p class="hero-th">รอบถัดไปของ Vibe Coding for PM เปิดรับเร็ว ๆ นี้ — จองล่วงหน้าทางอีเมล ไม่เก็บเงินล่วงหน้า</p>
+    <div class="hero-cta">
+      <a class="btn btn-blue" href="mailto:poom@charoenyost.com?subject=%E0%B8%88%E0%B8%AD%E0%B8%87%E0%B8%97%E0%B8%B5%E0%B9%88%E0%B8%99%E0%B8%B1%E0%B9%88%E0%B8%87%20Vibe%20Coding%20for%20PM%20(%E0%B8%A3%E0%B8%AD%E0%B8%9A%E0%B9%81%E0%B8%A3%E0%B8%81)">จองที่นั่งรอบแรก →</a>
+      <a class="btn btn-line" href="mailto:poom@charoenyost.com?subject=%E0%B8%AA%E0%B8%AD%E0%B8%9A%E0%B8%96%E0%B8%B2%E0%B8%A1%E0%B8%84%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B8%AA">ถามข้อมูลเพิ่ม</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>© 2026 BlueBelt Dojo · โรงฝึกเขียนโค้ดยุค AI โดยทีมที่ใช้ workflow นี้ทำงานจริงทุกวัน</div>
+    <div class="mono">TRAIN · ROLL · SUBMIT</div>
+    <div><a href="https://github.com/Poom5741" target="_blank" rel="noopener">github.com/Poom5741</a></div>
+  </div>
+</footer>
+
+</body>
+</html>
